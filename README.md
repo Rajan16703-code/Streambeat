@@ -1,3 +1,13 @@
+<img width="1024" height="1024" alt="Vartalap Logo Design" src="https://github.com/user-attachments/assets/5a0a36a1-cda8-408b-8bfa-39680c8c0626" />
+
+
+
+
+
+
+
+
+
 # 💬 Vartalap - Real-time Chat & Video Conferencing Platform
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
