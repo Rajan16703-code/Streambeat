@@ -351,13 +351,19 @@ Real-time statistics showing platform performance metrics.
 
 ### Homepage - Vartalap Landing Page
 Beautiful hero section with call-to-action buttons for creating and browsing rooms.
+<img width="1896" height="885" alt="Screenshot 2025-11-23 210305" src="https://github.com/user-attachments/assets/a4a66be7-04ba-435d-8b24-48a5c2916fc6" />
 
 ![Homepage](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/01-homepage.png)
 
 ### Features Section
+
+
 Showcase of 6 powerful features: Instant Messaging, Video Conferencing, Secure & Private, Global Reach, Mobile Optimized, and Lightning Fast.
 
-![Features](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/02-features.png)
+<img width="1902" height="909" alt="Screenshot 2025-11-23 210326" src="https://github.com/user-attachments/assets/3d9c40eb-719f-4bf1-9ec2-63c73bba2781" />
+
+
+
 
 ### Stats Section
 Display of real-time statistics: Users Connected, 24/7 Uptime, 0ms Latency, 100% Secure.
@@ -367,24 +373,36 @@ Display of real-time statistics: Users Connected, 24/7 Uptime, 0ms Latency, 100%
 ### Chat Rooms Management
 Create and manage multiple chat rooms with search functionality, copy share links, and delete rooms.
 
+<img width="1904" height="916" alt="Screenshot 2025-11-23 210422" src="https://github.com/user-attachments/assets/e05743d6-d547-4b07-8112-8892e37c1d2a" />
+
+
 ![Chat Rooms](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/04-chat-rooms.png)
 
 ### Chat Room Interface
+
 Real-time messaging with auto-scrolling, message bubbles, room info sidebar, and message sending.
+<img width="1905" height="912" alt="Screenshot 2025-11-23 210440" src="https://github.com/user-attachments/assets/d3e9f52a-2101-4c49-8e39-1538caf06320" />
+
 
 ![Chat Interface](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/05-chat-interface.png)
 
 ### Video Room
 HD video conferencing with multiple participants using Agora SDK integration.
+<img width="1902" height="916" alt="Screenshot 2025-11-23 210546" src="https://github.com/user-attachments/assets/b49ba301-bf2d-4d51-85cd-20672ba5f389" />
+
 
 ![Video Room](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/06-video-room.png)
 
 ### User Management Panel
 Create, edit, delete, and manage users with admin controls. View all users, their status, and perform actions.
 
+<img width="1902" height="916" alt="Screenshot 2025-11-23 210546" src="https://github.com/user-attachments/assets/9b44b90b-ccb6-4b56-b4b6-2c737f1ffec8" />
+
+
 ![User Management](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/07-user-management.png)
 
 ---
+<img width="1921" height="921" alt="Screenshot 2025-11-23 210757" src="https://github.com/user-attachments/assets/0cc4205c-8846-4dc8-a6e0-fa37acbb2b12" />
 
 **Made with ❤️ for seamless communication**
 
