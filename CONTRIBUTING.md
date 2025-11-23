@@ -474,9 +474,9 @@ Contributors will be recognized in:
 ## 📞 Need Help?
 
 - **Questions?** Open a GitHub Discussion
-- **Issue?** [Open a bug report](https://github.com/Ajoe62/Vartalap/issues)
+- **Issue?** [Open a bug report](Rajan167030)
 - **Code Review?** Ask in the PR comments
-- **Email**: ajoe62@example.com
+- **Email**: rajan.jha114430@gmail.com
 
 ---
 
