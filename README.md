@@ -347,23 +347,40 @@ Real-time statistics showing platform performance metrics.
 
 ![Platform Stats](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/03-stats.png)
 
+## 📸 Screenshots
+
+### Homepage - Vartalap Landing Page
+Beautiful hero section with call-to-action buttons for creating and browsing rooms.
+
+![Homepage](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/01-homepage.png)
+
+### Features Section
+Showcase of 6 powerful features: Instant Messaging, Video Conferencing, Secure & Private, Global Reach, Mobile Optimized, and Lightning Fast.
+
+![Features](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/02-features.png)
+
+### Stats Section
+Display of real-time statistics: Users Connected, 24/7 Uptime, 0ms Latency, 100% Secure.
+
+![Statistics](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/03-statistics.png)
+
 ### Chat Rooms Management
-Create and manage multiple chat rooms with search functionality.
+Create and manage multiple chat rooms with search functionality, copy share links, and delete rooms.
 
 ![Chat Rooms](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/04-chat-rooms.png)
 
 ### Chat Room Interface
-Real-time messaging with auto-scrolling and message bubbles.
+Real-time messaging with auto-scrolling, message bubbles, room info sidebar, and message sending.
 
 ![Chat Interface](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/05-chat-interface.png)
 
 ### Video Room
-HD video conferencing with multiple participants.
+HD video conferencing with multiple participants using Agora SDK integration.
 
 ![Video Room](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/06-video-room.png)
 
 ### User Management Panel
-Create, edit, delete, and manage users with admin controls.
+Create, edit, delete, and manage users with admin controls. View all users, their status, and perform actions.
 
 ![User Management](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/07-user-management.png)
 
