@@ -330,6 +330,45 @@ For issues, questions, or suggestions:
 
 ---
 
+## 📸 Screenshots
+
+### Homepage - Hero Section
+Welcome page with beautiful gradient design and quick action buttons.
+
+![Vartalap Homepage](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/01-homepage-hero.png)
+
+### Features Section
+Showcasing 6 powerful features with icons and descriptions.
+
+![Powerful Features](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/02-features.png)
+
+### Stats Section
+Real-time statistics showing platform performance metrics.
+
+![Platform Stats](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/03-stats.png)
+
+### Chat Rooms Management
+Create and manage multiple chat rooms with search functionality.
+
+![Chat Rooms](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/04-chat-rooms.png)
+
+### Chat Room Interface
+Real-time messaging with auto-scrolling and message bubbles.
+
+![Chat Interface](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/05-chat-interface.png)
+
+### Video Room
+HD video conferencing with multiple participants.
+
+![Video Room](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/06-video-room.png)
+
+### User Management Panel
+Create, edit, delete, and manage users with admin controls.
+
+![User Management](https://raw.githubusercontent.com/Rajan16703-code/Streambeat/master/screenshots/07-user-management.png)
+
+---
+
 **Made with ❤️ for seamless communication**
 
 Last Updated: November 23, 2025
