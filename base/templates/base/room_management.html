@@ -1,0 +1,532 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    :root {
+        --primary: #6366f1;
+        --secondary: #ec4899;
+        --success: #10b981;
+        --danger: #ef4444;
+        --dark: #1f2937;
+        --light: #f9fafb;
+        --border: #e5e7eb;
+        --text: #111827;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .header {
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 8px;
+    }
+
+    .header p {
+        color: #6b7280;
+        font-size: 16px;
+    }
+
+    .main-grid {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 32px;
+    }
+
+    .form-panel {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        height: fit-content;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-panel h2 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid var(--primary);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .rooms-section {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .rooms-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid var(--primary);
+    }
+
+    .rooms-header h2 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--dark);
+    }
+
+    .search-box {
+        max-width: 300px;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .rooms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 24px;
+    }
+
+    .room-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        transition: all 0.3s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .room-card:hover {
+        border-color: var(--primary);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+    }
+
+    .room-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 16px;
+    }
+
+    .room-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--dark);
+        word-break: break-word;
+    }
+
+    .room-badge {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .room-description {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+
+    .room-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 12px 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 16px;
+        font-size: 13px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .info-label {
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .info-value {
+        color: var(--primary);
+        font-weight: 700;
+    }
+
+    .room-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-small {
+        flex: 1;
+        min-width: 80px;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        transition: all 0.3s;
+        text-align: center;
+    }
+
+    .btn-small-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-small-primary:hover {
+        background: var(--primary-dark);
+    }
+
+    .btn-small-danger {
+        background: #fee2e2;
+        color: var(--danger);
+        border: 1px solid #fca5a5;
+    }
+
+    .btn-small-danger:hover {
+        background: #fecaca;
+    }
+
+    .btn-small-success {
+        background: #d1fae5;
+        color: var(--success);
+        border: 1px solid #6ee7b7;
+    }
+
+    .btn-small-success:hover {
+        background: #a7f3d0;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6b7280;
+    }
+
+    .empty-state-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 8px;
+    }
+
+    @media (max-width: 968px) {
+        .main-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .rooms-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .container {
+            padding: 20px 16px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .rooms-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .room-info {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>💬 Chat Rooms</h1>
+        <p>Create and manage your chat rooms</p>
+    </div>
+
+    <div class="main-grid">
+        <!-- Form Panel -->
+        <div class="form-panel">
+            <h2>Create New Room</h2>
+            
+            <form id="createRoomForm">
+                <div class="form-group">
+                    <label for="roomName">Room Name *</label>
+                    <input type="text" id="roomName" placeholder="Enter room name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="roomDesc">Description</label>
+                    <textarea id="roomDesc" placeholder="Optional: Describe your room..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="maxMembers">Max Members</label>
+                    <input type="number" id="maxMembers" value="10" min="2" max="100">
+                </div>
+
+                <button type="submit" class="btn btn-primary">✓ Create Room</button>
+            </form>
+        </div>
+
+        <!-- Rooms Grid -->
+        <div class="rooms-section">
+            <div class="rooms-header">
+                <h2>Your Rooms</h2>
+                <div class="search-box">
+                    <input type="text" id="searchRooms" placeholder="Search rooms...">
+                </div>
+            </div>
+
+            <div id="roomsList" class="rooms-grid">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <h3>No rooms yet</h3>
+                    <p>Create your first chat room using the form on the left</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_BASE = '/';
+
+    // Load rooms on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        loadRooms();
+    });
+
+    // Load and display rooms
+    function loadRooms() {
+        fetch(`${API_BASE}rooms/`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    displayRooms(data.rooms);
+                }
+            })
+            .catch(err => console.error('Error loading rooms:', err));
+    }
+
+    // Display rooms in grid
+    function displayRooms(rooms) {
+        const container = document.getElementById('roomsList');
+        
+        if (rooms.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <h3>No rooms yet</h3>
+                    <p>Create your first chat room using the form on the left</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = rooms.map(room => `
+            <div class="room-card">
+                <div class="room-card-header">
+                    <h3>${room.name}</h3>
+                    <span class="room-badge">Active</span>
+                </div>
+                
+                <p class="room-description">${room.description || 'No description'}</p>
+                
+                <div class="room-info">
+                    <div class="info-item">
+                        <span class="info-label">Code:</span>
+                        <span class="info-value">${room.room_code}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Members:</span>
+                        <span class="info-value">${room.member_count}/${room.max_members}</span>
+                    </div>
+                </div>
+                
+                <div class="room-actions">
+                    <button class="btn-small btn-small-success" onclick="copyShareLink('${room.share_link}')">
+                        📋 Copy Link
+                    </button>
+                    <button class="btn-small btn-small-primary" onclick="joinRoom(${room.id})">
+                        💬 Chat
+                    </button>
+                    <button class="btn-small btn-small-danger" onclick="deleteRoom(${room.id})">
+                        🗑️ Delete
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Create room
+    document.getElementById('createRoomForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const roomName = document.getElementById('roomName').value;
+        const roomDesc = document.getElementById('roomDesc').value;
+        const maxMembers = parseInt(document.getElementById('maxMembers').value);
+
+        fetch(`${API_BASE}rooms/create/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: roomName,
+                description: roomDesc,
+                max_members: maxMembers
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('✅ Room created successfully!');
+                document.getElementById('createRoomForm').reset();
+                loadRooms();
+            } else {
+                alert('❌ Error: ' + data.message);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('❌ Error creating room');
+        });
+    });
+
+    // Copy share link
+    function copyShareLink(link) {
+        const fullLink = window.location.origin + link;
+        navigator.clipboard.writeText(fullLink).then(() => {
+            alert('✅ Link copied to clipboard!');
+        });
+    }
+
+    // Join room (go to chat)
+    function joinRoom(roomId) {
+        window.location.href = `/chat/room/${roomId}/?room_id=${roomId}`;
+    }
+
+    // Delete room
+    function deleteRoom(roomId) {
+        if (confirm('Are you sure? This will delete the room and all messages.')) {
+            fetch(`${API_BASE}rooms/members/remove/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ room_id: roomId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert('✅ Room deleted');
+                loadRooms();
+            })
+            .catch(err => console.error(err));
+        }
+    }
+
+    // Search rooms
+    document.getElementById('searchRooms').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.room-card');
+        
+        cards.forEach(card => {
+            const name = card.querySelector('h3').textContent.toLowerCase();
+            if (name.includes(searchTerm)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+{% endblock %}

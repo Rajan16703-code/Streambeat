@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Streambeat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            margin-top: 0;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        /* Users List Section */
+        .users-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .users-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .users-table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            color: #333;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .users-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .users-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-admin {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .badge-staff {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .badge-active {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-inactive {
+            background: #dc3545;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 6px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #138496;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            width: auto;
+            padding: 0;
+            margin: 0;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .no-users {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .users-table {
+                font-size: 12px;
+            }
+
+            .users-table th,
+            .users-table td {
+                padding: 8px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-edit,
+            .btn-delete {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>👥 User Management Panel</h1>
+            <p>Manage all users - Create, Edit, Delete, and Change Passwords</p>
+        </header>
+
+        <div class="content">
+            <!-- Left Section: Forms -->
+            <div class="form-section">
+                <!-- Alert Messages -->
+                <div class="alert alert-success" id="successAlert"></div>
+                <div class="alert alert-error" id="errorAlert"></div>
+
+                <!-- Create User Form -->
+                <div id="createUserForm">
+                    <h2>➕ Create New User</h2>
+                    <form onsubmit="createUser(event)">
+                        <div class="form-group">
+                            <label for="username">Username *</label>
+                            <input type="text" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName">
+                        </div>
+                        <button type="submit">Create User</button>
+                        <button type="button" class="btn-secondary" onclick="resetForm()">Clear</button>
+                    </form>
+                </div>
+
+                <!-- Edit User Form (Hidden by default) -->
+                <div id="editUserForm" style="display:none;">
+                    <h2>✏️ Edit User</h2>
+                    <form onsubmit="updateUser(event)">
+                        <input type="hidden" id="editUserId">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="editUsername" disabled style="background: #f5f5f5;">
+                        </div>
+                        <div class="form-group">
+                            <label for="editEmail">Email</label>
+                            <input type="email" id="editEmail">
+                        </div>
+                        <div class="form-group">
+                            <label for="editFirstName">First Name</label>
+                            <input type="text" id="editFirstName">
+                        </div>
+                        <div class="form-group">
+                            <label for="editLastName">Last Name</label>
+                            <input type="text" id="editLastName">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="editIsActive">
+                            <label for="editIsActive">Active</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="editIsStaff">
+                            <label for="editIsStaff">Staff (Admin)</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="editIsSuperuser">
+                            <label for="editIsSuperuser">Superuser</label>
+                        </div>
+                        <button type="submit">Save Changes</button>
+                        <button type="button" class="btn-secondary" onclick="cancelEdit()">Cancel</button>
+                    </form>
+                </div>
+
+                <!-- Change Password Form (Hidden by default) -->
+                <div id="changePasswordForm" style="display:none;">
+                    <h2>🔐 Change Password</h2>
+                    <form onsubmit="changePassword(event)">
+                        <input type="hidden" id="pwdUserId">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="pwdUsername" disabled style="background: #f5f5f5;">
+                        </div>
+                        <div class="form-group">
+                            <label for="oldPassword">Old Password *</label>
+                            <input type="password" id="oldPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password *</label>
+                            <input type="password" id="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password *</label>
+                            <input type="password" id="confirmPassword" required>
+                        </div>
+                        <button type="submit">Change Password</button>
+                        <button type="button" class="btn-secondary" onclick="cancelPasswordChange()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Section: Users List -->
+            <div class="users-section">
+                <h2>📋 All Users</h2>
+                
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search users by username or email...">
+                </div>
+
+                <div class="loading" id="loading">Loading users...</div>
+
+                <div id="usersContainer">
+                    <table class="users-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersList">
+                        </tbody>
+                    </table>
+                    <div class="no-users" id="noUsers" style="display:none;">
+                        No users found
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/';
+
+        // Show alert message
+        function showAlert(message, type = 'success') {
+            const alertEl = document.getElementById(type === 'success' ? 'successAlert' : 'errorAlert');
+            alertEl.textContent = message;
+            alertEl.classList.add('show');
+            
+            setTimeout(() => {
+                alertEl.classList.remove('show');
+            }, 4000);
+        }
+
+        // Load all users
+        function loadUsers() {
+            document.getElementById('loading').classList.add('show');
+            
+            fetch(`${API_BASE}users/`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('loading').classList.remove('show');
+                    if (data.status === 'success') {
+                        displayUsers(data.users);
+                    } else {
+                        showAlert('Error loading users', 'error');
+                    }
+                })
+                .catch(err => {
+                    document.getElementById('loading').classList.remove('show');
+                    showAlert('Network error', 'error');
+                    console.error(err);
+                });
+        }
+
+        // Display users in table
+        function displayUsers(users) {
+            const usersList = document.getElementById('usersList');
+            const noUsers = document.getElementById('noUsers');
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '';
+                noUsers.style.display = 'block';
+                return;
+            }
+            
+            noUsers.style.display = 'none';
+            usersList.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td><strong>${user.username}</strong></td>
+                    <td>${user.email || '-'}</td>
+                    <td>
+                        ${user.is_superuser ? '<span class="badge badge-admin">Superuser</span>' : ''}
+                        ${user.is_staff && !user.is_superuser ? '<span class="badge badge-staff">Staff</span>' : ''}
+                        ${user.is_active ? '<span class="badge badge-active">Active</span>' : '<span class="badge badge-inactive">Inactive</span>'}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editUser(${user.id})">Edit</button>
+                            <button class="btn-edit" onclick="changePasswordUI(${user.id}, '${user.username}')">🔐 Pwd</button>
+                            <button class="btn-delete" onclick="deleteUserConfirm(${user.id}, '${user.username}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Create new user
+        function createUser(e) {
+            e.preventDefault();
+            
+            const userData = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                email: document.getElementById('email').value,
+                first_name: document.getElementById('firstName').value,
+                last_name: document.getElementById('lastName').value,
+            };
+
+            fetch(`${API_BASE}users/create/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showAlert(`User "${userData.username}" created successfully!`);
+                    resetForm();
+                    loadUsers();
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                showAlert('Error creating user', 'error');
+                console.error(err);
+            });
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+        }
+
+        // Edit user UI
+        function editUser(userId) {
+            fetch(`${API_BASE}users/`)
+                .then(res => res.json())
+                .then(data => {
+                    const user = data.users.find(u => u.id === userId);
+                    if (user) {
+                        document.getElementById('editUserId').value = user.id;
+                        document.getElementById('editUsername').value = user.username;
+                        document.getElementById('editEmail').value = user.email;
+                        document.getElementById('editFirstName').value = user.first_name;
+                        document.getElementById('editLastName').value = user.last_name;
+                        document.getElementById('editIsActive').checked = user.is_active;
+                        document.getElementById('editIsStaff').checked = user.is_staff;
+                        document.getElementById('editIsSuperuser').checked = user.is_superuser;
+                        
+                        document.getElementById('createUserForm').style.display = 'none';
+                        document.getElementById('changePasswordForm').style.display = 'none';
+                        document.getElementById('editUserForm').style.display = 'block';
+                    }
+                });
+        }
+
+        // Update user
+        function updateUser(e) {
+            e.preventDefault();
+            
+            const userData = {
+                user_id: parseInt(document.getElementById('editUserId').value),
+                email: document.getElementById('editEmail').value,
+                first_name: document.getElementById('editFirstName').value,
+                last_name: document.getElementById('editLastName').value,
+                is_active: document.getElementById('editIsActive').checked,
+                is_staff: document.getElementById('editIsStaff').checked,
+                is_superuser: document.getElementById('editIsSuperuser').checked,
+            };
+
+            fetch(`${API_BASE}users/update/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showAlert(`User updated successfully!`);
+                    cancelEdit();
+                    loadUsers();
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                showAlert('Error updating user', 'error');
+                console.error(err);
+            });
+        }
+
+        // Cancel edit
+        function cancelEdit() {
+            document.getElementById('createUserForm').style.display = 'block';
+            document.getElementById('editUserForm').style.display = 'none';
+            resetForm();
+        }
+
+        // Change password UI
+        function changePasswordUI(userId, username) {
+            document.getElementById('pwdUserId').value = userId;
+            document.getElementById('pwdUsername').value = username;
+            document.getElementById('oldPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            
+            document.getElementById('createUserForm').style.display = 'none';
+            document.getElementById('editUserForm').style.display = 'none';
+            document.getElementById('changePasswordForm').style.display = 'block';
+        }
+
+        // Change password
+        function changePassword(e) {
+            e.preventDefault();
+            
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            
+            if (newPwd !== confirmPwd) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+
+            const pwdData = {
+                user_id: parseInt(document.getElementById('pwdUserId').value),
+                old_password: document.getElementById('oldPassword').value,
+                new_password: newPwd,
+            };
+
+            fetch(`${API_BASE}users/change-password/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(pwdData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showAlert(`Password changed successfully!`);
+                    cancelPasswordChange();
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                showAlert('Error changing password', 'error');
+                console.error(err);
+            });
+        }
+
+        // Cancel password change
+        function cancelPasswordChange() {
+            document.getElementById('createUserForm').style.display = 'block';
+            document.getElementById('changePasswordForm').style.display = 'none';
+            resetForm();
+        }
+
+        // Delete user
+        function deleteUserConfirm(userId, username) {
+            if (confirm(`Are you sure you want to delete user "${username}"? This action cannot be undone.`)) {
+                deleteUser(userId);
+            }
+        }
+
+        function deleteUser(userId) {
+            fetch(`${API_BASE}users/delete/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showAlert(data.message);
+                    loadUsers();
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            })
+            .catch(err => {
+                showAlert('Error deleting user', 'error');
+                console.error(err);
+            });
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            const query = e.target.value.toLowerCase();
+            const rows = document.getElementById('usersList').querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                const username = row.cells[1].textContent.toLowerCase();
+                const email = row.cells[2].textContent.toLowerCase();
+                
+                if (username.includes(query) || email.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Load users on page load
+        window.addEventListener('DOMContentLoaded', loadUsers);
+        
+        // Refresh users every 30 seconds (optional)
+        // setInterval(loadUsers, 30000);
+    </script>
+</body>
+</html>

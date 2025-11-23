@@ -1,65 +1,286 @@
 {% extends 'base/main.html' %}
 {% load static %}
+
 {% block content %}
-
-<main>
-
-    <section id="form-container">
-
-        <img id="logo" src="{% static 'images/chat-icon.png' %}"/>
-
-        <div id="welcome-message">
-            <h1>Welcome to Streambeat</h1>
-            <p>The perfect video conferencing platform just for you!</p>
-        </div>
-
-        <form id="form">
-            <div class="field-wrapper">
-
-                <div class="form-field">
-                    <label>Room:</label>
-                    <input name="room" placeholder="Enter a room name..."  style="text-transform:uppercase"/>
-                </div>
-
-                <div class="form-field">
-                    <label>Name:</label>
-                    <input name="name" placeholder="Enter your name..."  style="text-transform:uppercase"/>
-                </div>
-
-                <div class="form-field">
-                    <input type="submit" value="Join Stream" />
-                </div>
-            </div>
-        </form>
-    </section>
-</main>
-
-<script>
-    let form = document.getElementById('form')
-
-    let handleSubmit = async (e) => {
-        e.preventDefault()
-        let room = e.target.room.value.toUpperCase()
-        let name = e.target.name.value
-
-        let response = await fetch(`/get_token/?channel=${room}`)
-        let data = await response.json()
-
-        let UID = data.uid
-        let token = data.token
-
-        sessionStorage.setItem('UID', UID)
-        sessionStorage.setItem('token', token)
-        sessionStorage.setItem('room', room)
-        sessionStorage.setItem('name', name)
-
-        window.open('/room/', '_self')
+<style>
+    :root {
+        --primary: #6366f1;
+        --secondary: #ec4899;
+        --success: #10b981;
+        --dark: #1f2937;
+        --light: #f9fafb;
+        --border: #e5e7eb;
     }
 
+    .hero {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+        padding: 80px 40px;
+        text-align: center;
+    }
 
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
 
-    form.addEventListener('submit', handleSubmit)
-</script>
+    .hero h1 {
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 16px;
+        line-height: 1.2;
+    }
 
-{% endblock content %}
+    .hero p {
+        font-size: 18px;
+        color: #6b7280;
+        margin-bottom: 32px;
+        line-height: 1.6;
+    }
 
+    .cta-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 12px 32px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+        background: var(--light);
+        transform: translateY(-2px);
+    }
+
+    .features {
+        max-width: 1200px;
+        margin: 80px auto;
+        padding: 0 40px;
+    }
+
+    .features-title {
+        text-align: center;
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--dark);
+        margin-bottom: 60px;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 32px;
+    }
+
+    .feature-card {
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 32px;
+        text-align: center;
+        transition: all 0.3s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary);
+    }
+
+    .feature-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 12px;
+    }
+
+    .feature-card p {
+        font-size: 14px;
+        color: #6b7280;
+        line-height: 1.6;
+    }
+
+    .stats {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        padding: 60px 40px;
+        margin: 80px 0;
+        border-radius: 16px;
+        text-align: center;
+    }
+
+    .stats-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+    }
+
+    .stat-item h4 {
+        font-size: 40px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .stat-item p {
+        font-size: 16px;
+        opacity: 0.9;
+    }
+
+    .footer {
+        background: var(--dark);
+        color: white;
+        text-align: center;
+        padding: 32px 40px;
+        margin-top: 80px;
+    }
+
+    .footer p {
+        margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            padding: 60px 20px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+        }
+
+        .hero p {
+            font-size: 16px;
+        }
+
+        .features {
+            padding: 0 20px;
+            margin: 60px auto;
+        }
+
+        .features-title {
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="hero-content">
+        <h1>Welcome to Vartalap</h1>
+        <p>Real-time chat and video conferencing. Connect with anyone, anywhere, instantly.</p>
+        <div class="cta-buttons">
+            <button class="btn btn-primary" onclick="window.location='/manage-rooms/'">+ Create Chat Room</button>
+            <button class="btn btn-secondary" onclick="window.location='/rooms/'">Browse Rooms</button>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="features">
+    <h2 class="features-title">Powerful Features</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>Instant Messaging</h3>
+            <p>Send messages instantly with real-time synchronization across all devices.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎥</div>
+            <h3>Video Conferencing</h3>
+            <p>High-quality video calls with multiple participants using Agora SDK.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Secure & Private</h3>
+            <p>End-to-end encrypted conversations. Your privacy is our priority.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>Global Reach</h3>
+            <p>Connect with people anywhere in the world instantly.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Mobile Optimized</h3>
+            <p>Works seamlessly on desktop and mobile devices.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Lightning Fast</h3>
+            <p>Optimized for speed and reliability.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <h4>∞</h4>
+            <p>Users Connected</p>
+        </div>
+        <div class="stat-item">
+            <h4>24/7</h4>
+            <p>Uptime</p>
+        </div>
+        <div class="stat-item">
+            <h4>0ms</h4>
+            <p>Latency</p>
+        </div>
+        <div class="stat-item">
+            <h4>100%</h4>
+            <p>Secure</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<div class="footer">
+    <p>&copy; 2025 Vartalap. All rights reserved.</p>
+    <p>Built with ❤️ for seamless communication</p>
+</div>
+
+{% endblock %}

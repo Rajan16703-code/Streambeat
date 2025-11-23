@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Room - Streambeat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .room-description {
+            color: #666;
+            font-size: 14px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .room-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .join-form {
+            margin: 30px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-join {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-join:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-join:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-full {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="icon">🎬</div>
+            <div id="content">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading room details...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const roomShareLinkId = window.location.pathname.split('/').filter(x => x)[1];
+        const API_BASE = '/';
+
+        function loadRoomDetails() {
+            fetch(`${API_BASE}rooms/${roomShareLinkId}/`)
+                .then(res => {
+                    if (res.status === 404) {
+                        displayError('Room not found or has been deleted.');
+                        return null;
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data) {
+                        if (data.status === 'success') {
+                            displayRoomDetails(data.room);
+                        } else {
+                            displayError(data.message || 'Error loading room');
+                        }
+                    }
+                })
+                .catch(err => {
+                    displayError('Network error. Please try again.');
+                    console.error(err);
+                });
+        }
+
+        function displayRoomDetails(room) {
+            const isFull = room.members_count >= room.max_members;
+            const content = document.getElementById('content');
+            
+            content.innerHTML = `
+                <h1>${room.name}</h1>
+                ${room.description ? `<p class="room-description">${room.description}</p>` : ''}
+                
+                <div class="room-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Room Code:</span>
+                        <span class="detail-value">${room.room_code}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Members:</span>
+                        <span class="detail-value">${room.members_count}/${room.max_members}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Status:</span>
+                        <span class="status-badge ${isFull ? 'status-full' : 'status-available'}">
+                            ${isFull ? '🔴 Room Full' : '🟢 Available'}
+                        </span>
+                    </div>
+                </div>
+
+                ${isFull ? `
+                    <div class="alert alert-warning show">
+                        <strong>⚠️ Notice:</strong> This room has reached its maximum capacity.
+                    </div>
+                ` : `
+                    <div class="join-form">
+                        <div class="form-group">
+                            <label for="userName">Your Name *</label>
+                            <input type="text" id="userName" placeholder="Enter your name..." required>
+                        </div>
+                        <button class="btn-join" onclick="joinRoom()">Join Room</button>
+                    </div>
+                `}
+            `;
+
+            if (!isFull) {
+                document.getElementById('userName').focus();
+            }
+        }
+
+        function displayError(message) {
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <h1>❌ Error</h1>
+                <div class="alert alert-error show">
+                    ${message}
+                </div>
+                <p style="color: #666; margin-top: 20px;">
+                    <a href="/" style="color: #667eea; text-decoration: none;">← Go Back</a>
+                </p>
+            `;
+        }
+
+        function joinRoom() {
+            const userName = document.getElementById('userName').value.trim();
+            
+            if (!userName) {
+                alert('Please enter your name');
+                return;
+            }
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Joining...';
+
+            // Generate a random UID for the member
+            const uid = Math.random().toString(36).substr(2, 9) + Date.now();
+
+            // Get room ID from URL and add member
+            fetch(`${API_BASE}rooms/${roomShareLinkId}/`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const room = data.room;
+                        
+                        // Add member to room
+                        return fetch(`${API_BASE}rooms/members/add/`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                room_id: room.id,
+                                name: userName,
+                                uid: uid
+                            })
+                        });
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Redirect to room
+                        window.location.href = `/room/?room_code=${roomShareLinkId}`;
+                    } else {
+                        alert(data.message);
+                        btn.disabled = false;
+                        btn.textContent = 'Join Room';
+                    }
+                })
+                .catch(err => {
+                    alert('Error joining room');
+                    btn.disabled = false;
+                    btn.textContent = 'Join Room';
+                    console.error(err);
+                });
+        }
+
+        // Load room details on page load
+        window.addEventListener('DOMContentLoaded', loadRoomDetails);
+    </script>
+</body>
+</html>

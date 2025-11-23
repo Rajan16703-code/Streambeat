@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Streambeat - Video Conferencing</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'styles/main.css' %}">
+    <script src="{% static 'js/main.js' %}"></script>
+    <style>
+        /* Navbar Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            transition: transform 0.3s;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle::after {
+            content: '▼';
+            font-size: 10px;
+            margin-left: 6px;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            display: none;
+            flex-direction: column;
+            margin-top: 5px;
+            overflow: hidden;
+            z-index: 1001;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: flex;
+        }
+
+        .dropdown-item {
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 3px solid transparent;
+        }
+
+        .dropdown-item:hover {
+            background: #f0f0f0;
+            border-left-color: #667eea;
+            padding-left: 25px;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #eee;
+            margin: 5px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                flex-direction: column;
+                width: 100%;
+                text-align: left;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s;
+            }
+
+            .nav-menu.active {
+                max-height: 500px;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                padding: 15px 20px;
+                border-radius: 0;
+            }
+
+            .dropdown-menu {
+                position: static;
+                box-shadow: none;
+                background: rgba(0, 0, 0, 0.1);
+                display: none;
+                margin-top: 0;
+            }
+
+            .dropdown:hover .dropdown-menu {
+                display: none;
+            }
+
+            .dropdown.active .dropdown-menu {
+                display: flex;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 10px;
+            }
+
+            .btn-primary {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        .icon {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <div class="navbar-logo">🎬</div>
+                <span>Streambeat</span>
+            </a>
+
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
+                <!-- Video & Rooms -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="icon">🎥</span>
+                        Video & Rooms
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/" class="dropdown-item">
+                            <span>🏠</span> Home / Lobby
+                        </a>
+                        <a href="/room/" class="dropdown-item">
+                            <span>🎬</span> Video Room
+                        </a>
+                        <a href="/manage-rooms/" class="dropdown-item">
+                            <span>📋</span> Room Management
+                        </a>
+                        <a href="/get_token/?channel=DEMO" class="dropdown-item">
+                            <span>🔑</span> Get Token
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" onclick="alert('Create room from Room Management page')">
+                            <span>➕</span> Create Room
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Users -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="icon">👥</span>
+                        Users
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/manage-users/" class="dropdown-item">
+                            <span>👨‍💼</span> Manage Users
+                        </a>
+                        <a href="/users/" class="dropdown-item">
+                            <span>📊</span> Users List (API)
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/admin/" class="dropdown-item">
+                            <span>🔐</span> Admin Panel
+                        </a>
+                    </div>
+                </li>
+
+                <!-- API Documentation -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="icon">📡</span>
+                        APIs
+                    </a>
+                    <div class="dropdown-menu">
+                        <span style="padding: 10px 20px; color: #999; font-size: 12px; font-weight: 600;">USER MANAGEMENT</span>
+                        <a href="/users/" class="dropdown-item">GET /users/</a>
+                        <a href="/users/create/" class="dropdown-item">POST /users/create/</a>
+                        <a href="/users/update/" class="dropdown-item">POST /users/update/</a>
+                        <a href="/users/delete/" class="dropdown-item">POST /users/delete/</a>
+                        <div class="dropdown-divider"></div>
+                        <span style="padding: 10px 20px; color: #999; font-size: 12px; font-weight: 600;">ROOM MANAGEMENT</span>
+                        <a href="/rooms/" class="dropdown-item">GET /rooms/</a>
+                        <a href="/rooms/create/" class="dropdown-item">POST /rooms/create/</a>
+                        <a href="/rooms/by-code/" class="dropdown-item">GET /rooms/by-code/</a>
+                        <a href="/rooms/members/" class="dropdown-item">GET /rooms/members/</a>
+                    </div>
+                </li>
+
+                <!-- Resources -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <span class="icon">ℹ️</span>
+                        Help
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/" class="dropdown-item" onclick="showInfo('HOME')">
+                            <span>🏠</span> About Streambeat
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="showInfo('FEATURES')">
+                            <span>⭐</span> Features
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="showInfo('USAGE')">
+                            <span>📖</span> How to Use
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/admin/" class="dropdown-item">
+                            <span>🔧</span> Admin Settings
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="nav-buttons">
+                <a href="/manage-rooms/" class="btn-primary">🎬 Create Room</a>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}
+
+    {% endblock content %}
+
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!link.classList.contains('dropdown-toggle')) {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Handle dropdown on mobile
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                }
+            });
+        });
+
+        function showInfo(type) {
+            const messages = {
+                'HOME': 'Welcome to Streambeat - Your video conferencing platform!',
+                'FEATURES': 'Features: Real-time video calls, Room management, User management, Share room links',
+                'USAGE': 'Create a room, copy the link, share with others, they join and start video calling!'
+            };
+            alert(messages[type]);
+        }
+    </script>
+</body>
+</html>

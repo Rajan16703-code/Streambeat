@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Streambeat - Real-Time Chat Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .test-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .room-info {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: #667eea;
+        }
+
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .instructions {
+            background: #e8f4f8;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .browser-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .browser-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .browser-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .browser-link h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .browser-link p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .browser-links {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 Streambeat Real-Time Chat Test</h1>
+            <p>Test real-time messaging with 2 browsers</p>
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">📋 Test Room Details</div>
+            
+            <div class="room-info">
+                <div class="info-row">
+                    <span class="info-label">Room Name:</span>
+                    <span class="info-value">Test Chat Room</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Room Code:</span>
+                    <span class="info-value">VFM4GE <button class="copy-btn" onclick="copyText('VFM4GE')">Copy</button></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Room ID:</span>
+                    <span class="info-value">1 <button class="copy-btn" onclick="copyText('1')">Copy</button></span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Status:</span>
+                    <span class="info-value">Active <span class="status-badge">Ready to Test</span></span>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3>✅ How to Test Real-Time Chat:</h3>
+                <ol>
+                    <li><strong>Open Browser 1:</strong> Click "Open Chat in Browser 1" button below</li>
+                    <li><strong>Open Browser 2:</strong> Click "Open Chat in Browser 2" button below (or right-click and open in new tab)</li>
+                    <li><strong>Send Messages:</strong> Type a message in Browser 1 and click Send</li>
+                    <li><strong>Verify Real-Time:</strong> Check if message appears immediately in Browser 2 (within 2 seconds due to polling)</li>
+                    <li><strong>Test Reverse:</strong> Send message from Browser 2 and verify it appears in Browser 1</li>
+                    <li><strong>Edit Messages:</strong> Try editing messages (if feature is enabled)</li>
+                    <li><strong>Delete Messages:</strong> Try deleting messages (if feature is enabled)</li>
+                </ol>
+            </div>
+
+            <div class="browser-links">
+                <a href="http://localhost:8000/chat/room/1/?room_id=1" class="browser-link" target="_blank">
+                    <h3>🌐 Browser 1</h3>
+                    <p>Open Chat Room in new tab</p>
+                </a>
+                <a href="http://localhost:8000/chat/room/1/?room_id=1" class="browser-link" target="_blank">
+                    <h3>🌐 Browser 2</h3>
+                    <p>Open Chat Room in new tab</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">🚀 Quick Links</div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <a href="http://localhost:8000/" style="padding: 15px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 600;">
+                    🏠 Home
+                </a>
+                <a href="http://localhost:8000/manage-rooms/" style="padding: 15px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 600;">
+                    🎥 Manage Rooms
+                </a>
+                <a href="http://localhost:8000/manage-users/" style="padding: 15px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 600;">
+                    👥 Manage Users
+                </a>
+                <a href="http://localhost:8000/admin/" style="padding: 15px; background: #667eea; color: white; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 600;">
+                    ⚙️ Admin Panel
+                </a>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">📊 API Endpoints for Testing</div>
+            
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 10px; text-align: left;">Endpoint</th>
+                            <th style="padding: 10px; text-align: left;">Method</th>
+                            <th style="padding: 10px; text-align: left;">Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 10px;"><code>/chat/messages/</code></td>
+                            <td style="padding: 10px;">GET</td>
+                            <td style="padding: 10px;">Fetch all messages from room</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 10px;"><code>/chat/send/</code></td>
+                            <td style="padding: 10px;">POST</td>
+                            <td style="padding: 10px;">Send a new message</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 10px;"><code>/chat/edit/</code></td>
+                            <td style="padding: 10px;">POST</td>
+                            <td style="padding: 10px;">Edit existing message</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <td style="padding: 10px;"><code>/chat/delete/</code></td>
+                            <td style="padding: 10px;">POST</td>
+                            <td style="padding: 10px;">Delete a message</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;"><code>/chat/room/&lt;id&gt;/</code></td>
+                            <td style="padding: 10px;">GET</td>
+                            <td style="padding: 10px;">View chat room UI</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Copied: ' + text);
+            });
+        }
+    </script>
+</body>
+</html>
