@@ -1,3 +1,9 @@
+
+<img width="1024" height="1024" alt="Vartalap Logo Design" src="https://github.com/user-attachments/assets/8ad45a63-8248-4f4d-bd07-03df6e01f864" />
+
+
+
+
 # 🤝 Contributing to Vartalap
 
 Thank you for your interest in contributing to Vartalap! This guide will help you understand our development process and how you can help make this project better.
